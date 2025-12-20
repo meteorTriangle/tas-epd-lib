@@ -23,7 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "epd_api.h"
 // #include "modules/TAS0266SBW_T90.h"
-#include "modules/TAS0290SBW_T94.h"
+#include "modules/TAS0266SBW_T90.h"
 #include "hal/ports/hal_stm32.h"
 #include <string.h>
 #include <stdlib.h>
@@ -109,11 +109,11 @@ int main(void)
       .busy_pin = EPD_nBUSY_Pin,
   };
   EPD_HAL hal1 = EPD_HAL_InitSTM32(&epd1);
-  EPD_API_Init(&epd_handle1, &hal1, &EPD_PROFILE_TAS0290SBW_T94);
+  EPD_API_Init(&epd_handle1, &hal1, &EPD_PROFILE_TAS0266SBW_T90);
   uint8_t status = EPD_Init(&epd_handle1);
-  uint8_t image_data[4736];
+  uint8_t image_data[5624];
   memset(image_data, 0xF0, sizeof(image_data));
-  status = EPD_WriteImage(&epd_handle1, (uint8_t*)image_data, 4736, 0);
+  status = EPD_WriteImage(&epd_handle1, (uint8_t*)image_data, 5624, 0);
   status = EPD_Update(&epd_handle1);
 
   /* USER CODE END 2 */

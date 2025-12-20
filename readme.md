@@ -20,8 +20,10 @@ This is a driver library for E-Paper Displays (EPDs) from TAS, designed for flex
 
 ### E-Paper Modules
 
+* TAS0213SBW_B74
 * TAS0213SBWYR-E50
 * TAS0266SBW-T90
+* TAS0290SBW-T94
 * (More can be added in `Src/modules/`)
 
 ## Directory Structure
@@ -61,30 +63,37 @@ target_link_libraries(YourApp PRIVATE TAS_EPD_Library)
 Set the `TARGET_PLATFORM` variable **before** adding the subdirectory to select the correct HAL implementation:
 
 #### STM32
+
 ```cmake
 set(TARGET_PLATFORM "STM32")
 add_subdirectory(epd_lib)
 ```
+
 *Requires `stm32cubemx` target to be defined (standard in STM32CubeMX CMake projects).*
 
 #### Raspberry Pi Pico
+
 ```cmake
 set(TARGET_PLATFORM "PICO")
 add_subdirectory(epd_lib)
 ```
+
 *Requires Pico SDK environment.*
 
 #### Linux / Raspberry Pi
+
 ```cmake
 set(TARGET_PLATFORM "LINUX") # or "RPI"
 add_subdirectory(epd_lib)
 ```
 
 #### Custom Platform
+
 ```cmake
 set(TARGET_PLATFORM "CUSTOM")
 add_subdirectory(epd_lib)
 ```
+
 *You must implement the HAL functions yourself and provide them to the library.*
 
 ## Usage Example
@@ -135,11 +144,11 @@ void main() {
 
 ## How to Add a New Display Module
 
-1.  **Driver**: If the display uses a new controller, add the driver in `Src/drivers/`.
-2.  **Module**: Create `MyDisplay.c` and `MyDisplay.h` in `Src/modules/`.
-    *   Define `EPD_Profile` (resolution, colors, LUTs).
-    *   Implement `EPD_Modules` functions (init, clear, update).
-3.  **Build**: Ensure the new files are included in `cmake/LibBuild.cmake` (or added automatically if using glob).
+1. **Driver**: If the display uses a new controller, add the driver in `Src/drivers/`.
+2. **Module**: Create `MyDisplay.c` and `MyDisplay.h` in `Src/modules/`.
+    * Define `EPD_Profile` (resolution, colors, LUTs).
+    * Implement `EPD_Modules` functions (init, clear, update).
+3. **Build**: Ensure the new files are included in `cmake/LibBuild.cmake` (or added automatically if using glob).
 
 ## License
 
