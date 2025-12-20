@@ -1,90 +1,146 @@
 # TAS EPD Library
 
-This is a driver library for E-Paper Displays (EPDs) from TAS, designed for flexibility and portability across different microcontrollers.
+This is a driver library for E-Paper Displays (EPDs) from TAS, designed for flexibility and portability across different microcontrollers and platforms.
 
 ## Features
 
-* **Portable**: Easily adaptable to various platforms (Arduino, STM32, Raspberry Pi Pico, etc.) through a clean Hardware Abstraction Layer (HAL).
+* **Portable**: Easily adaptable to various platforms (STM32, Raspberry Pi Pico, Linux/Raspberry Pi, etc.) through a clean Hardware Abstraction Layer (HAL).
 * **Modular**: Support for new E-Paper displays can be added by creating new module files.
 * **Flexible**: Supports different display controllers and color modes.
+* **CMake Integration**: Easy to integrate into existing CMake projects.
 
 ## Supported Hardware
 
 ### Platforms
 
-* Raspberry Pi Pico
-* STM32
-* Arduino
+* **STM32**: Integrated with STM32CubeMX generated projects.
+* **Raspberry Pi Pico**: Uses Pico SDK.
+* **Linux / Raspberry Pi**: Generic Linux GPIO/SPI support (e.g., via wiringPi or gpiod).
+* **Custom**: User-defined HAL for any other platform.
 
 ### E-Paper Modules
 
+* TAS0213SBWYR-E50
 * TAS0266SBW-T90
-* TAS0426HBW-M01
+* (More can be added in `Src/modules/`)
 
-## Architecture
+## Directory Structure
 
-The library is structured into three main layers:
+```
+epd_lib/
+├── cmake/              # CMake build scripts
+│   ├── AppBuild.cmake  # For building as a standalone root project
+│   └── LibBuild.cmake  # For building as a library in another project
+├── example/            # Example projects (STM32, Pico, etc.)
+├── Inc/                # Public API headers
+├── Src/
+│   ├── core/           # Core EPD logic
+│   ├── drivers/        # Display controller drivers (SSD1680, JD79661, etc.)
+│   ├── hal/            # Hardware Abstraction Layer interface
+│   │   └── ports/      # Platform-specific HAL implementations
+│   └── modules/        # Specific EPD panel configurations
+└── CMakeLists.txt      # Main CMake entry point
+```
 
-1. **API Layer** (`Inc/epd_api.h`): Provides high-level functions to control the EPD.
-2. **Core Layer** (`Src/core`): Implements the main logic for display control.
-3. **Hardware Abstraction Layer (HAL)** (`Src/hal`): Defines the interface for hardware-specific functions (SPI, GPIO, delay).
+## Integration Guide
 
-The key data structures are:
+### 1. Add as a Subdirectory
 
-* `EPD_Handle`: Represents an E-Paper display instance, linking the profile and HAL.
-* `EPD_Profile`: Defines the properties of a specific E-Paper display module.
-* `EPD_HAL`: A set of function pointers for hardware-specific operations.
+Add this library to your project's `CMakeLists.txt`:
 
-## Getting Started
+```cmake
+# Add the library subdirectory
+add_subdirectory(path/to/epd_lib)
 
-Here is a basic example of how to use the library:
+# Link the library to your target
+target_link_libraries(YourApp PRIVATE TAS_EPD_Library)
+```
+
+### 2. Configure the Platform
+
+Set the `TARGET_PLATFORM` variable **before** adding the subdirectory to select the correct HAL implementation:
+
+#### STM32
+```cmake
+set(TARGET_PLATFORM "STM32")
+add_subdirectory(epd_lib)
+```
+*Requires `stm32cubemx` target to be defined (standard in STM32CubeMX CMake projects).*
+
+#### Raspberry Pi Pico
+```cmake
+set(TARGET_PLATFORM "PICO")
+add_subdirectory(epd_lib)
+```
+*Requires Pico SDK environment.*
+
+#### Linux / Raspberry Pi
+```cmake
+set(TARGET_PLATFORM "LINUX") # or "RPI"
+add_subdirectory(epd_lib)
+```
+
+#### Custom Platform
+```cmake
+set(TARGET_PLATFORM "CUSTOM")
+add_subdirectory(epd_lib)
+```
+*You must implement the HAL functions yourself and provide them to the library.*
+
+## Usage Example
 
 ```c
 #include "epd_api.h"
-#include "hal_stm32.h" // Your platform-specific HAL
-#include "TAS0266SBW_T90.h" // The EPD module you are using
+#include "TAS0266SBW_T90.h" // Include the specific module header
 
-// 1. Create a handle for the EPD
+// 1. Define HAL configuration (Platform specific)
+// For STM32:
+// STM32_EPD_Config hal_conf = { .hspi = &hspi1, .cs_port = GPIOA, .cs_pin = GPIO_PIN_4, ... };
+// EPD_HAL hal = EPD_HAL_InitSTM32(&hal_conf);
+
+// For Custom Platform:
+// EPD_HAL hal = {
+//     .init = my_init,
+//     .gpio_write = my_gpio_write,
+//     .spi_write_byte = my_spi_write,
+//     .delay_ms = my_delay,
+//     ...
+// };
+
+// 2. Create EPD Handle
 EPD_Handle my_epd;
 
-// 2. Define the HAL functions for your platform
-const EPD_HAL my_hal = {
-    .init = hal_stm32_init,
-    .gpio_write = hal_stm32_gpio_write,
-    .gpio_read = hal_stm32_gpio_read,
-    .spi_write_byte = hal_stm32_spi_write_byte,
-    .spi_write_buffer = hal_stm32_spi_write_buffer,
-    .delay_ms = hal_stm32_delay_ms,
-    .user_data = NULL, // Optional user data
-};
-
 void main() {
-    // 3. Initialize the EPD
-    EPD_API_Init(&my_epd, &my_hal, &EPD_PROFILE_TAS0266SBW_T90);
+    // 3. Initialize the EPD with HAL and Profile
+    EPD_API_Init(&my_epd, &hal, &EPD_PROFILE_TAS0266SBW_T90);
 
-    // 4. Get the display-specific functions
-    const EPD_Modules* epd_module = &EPD_MODULE_TAS0266SBW_T90;
+    // 4. Get Module Interface
+    const EPD_Modules* module = &EPD_MODULE_TAS0266SBW_T90;
 
-    // 5. Initialize the display
-    epd_module->init(&my_epd);
+    // 5. Initialize Display
+    module->init(&my_epd);
 
-    // 6. Write image data to the display
-    // (Image data format depends on the display and color mode)
-    // epd_module->write_image(&my_epd, image_data, image_data_length);
+    // 6. Clear Display (White)
+    module->clear(&my_epd, 0xFF); 
+
+    // 7. Draw Image (if available)
+    // module->write_image(&my_epd, image_buffer);
+
+    // 8. Refresh Display
+    module->update(&my_epd);
     
-    // 7. Update the display
-    epd_module->update(&my_epd);
+    while(1);
 }
 ```
 
-## How to Add a New Display
+## How to Add a New Display Module
 
-1. **Create a driver file** (e.g., `MyEPD.c`) in `Src/drivers/` if a new display controller is used.
-2. **Create a module file** (e.g., `MyModule.c` and `MyModule.h`) in `Src/modules/`.
-3. In `MyModule.h`, declare the `EPD_Profile` and `EPD_Modules` for your display.
-4. In `MyModule.c`, define the `EPD_Profile` with the display's properties and the `EPD_Modules` with the corresponding functions.
-5. Include `MyModule.h` in your application and use its profile and modules.
+1.  **Driver**: If the display uses a new controller, add the driver in `Src/drivers/`.
+2.  **Module**: Create `MyDisplay.c` and `MyDisplay.h` in `Src/modules/`.
+    *   Define `EPD_Profile` (resolution, colors, LUTs).
+    *   Implement `EPD_Modules` functions (init, clear, update).
+3.  **Build**: Ensure the new files are included in `cmake/LibBuild.cmake` (or added automatically if using glob).
 
-## Building the Library
+## License
 
-This project uses CMake for building the library. You can configure the build by setting the platform-specific variables (e.g., `PICO_SDK_PATH` for Raspberry Pi Pico).
+[License Information Here]
