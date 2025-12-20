@@ -1,1 +1,6 @@
 *build/
+*.vscode/
+*Doxyfile*
+*.bak
+*html/
+*latex/

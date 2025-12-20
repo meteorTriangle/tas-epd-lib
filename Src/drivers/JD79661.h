@@ -7,6 +7,7 @@
 #define JD79661_PANEL_SETTING                0x00
 #define JD79661_POWER_SETTING                0x01
 #define JD79661_POWER_OFF                    0x02
+#define JD79661_POWER_OFF_SEQUENCE_SETTING   0x03
 #define JD79661_POWER_ON                     0x04
 #define JD79661_BOOSTER_SOFT_START           0x06
 #define JD79661_DEEP_SLEEP                   0x07
@@ -15,6 +16,7 @@
 #define JD79661_DISPLAY_REFRESH              0x12
 #define JD79661_AUTO_SEQUENCE                0x17
 #define JD79661_PLL_CONTROL                  0x30
+#define JD79661_TEMP_SENSOR_CONTROL          0x40
 #define JD79661_TEMPERATURE_CALIBRATION      0x41
 #define JD79661_TEMPERATURE_SENSOR_WRITE     0x42
 #define JD79661_TEMPERATURE_SENSOR_READ      0x43
@@ -30,10 +32,12 @@
 #define JD79661_PROGRAM_MODE                 0x90
 #define JD79661_ACTIVE_PROGRAM               0x91
 #define JD79661_READ_MTP_DATA                0x92
+#define JD79661_REVISION2                    0x9E
 #define JD79661_READ_MTP_RESERVED            0x9F
 #define JD79661_POWER_SAVING                 0xE3
 #define JD79661_LVDS_SETTING                 0xE4
 
+extern const EPD_Driver_Interface JD79661_Driver;
 
 
 #endif // JD79661_H

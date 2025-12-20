@@ -3,6 +3,7 @@
 #define SSD1680_H
 
 #include "hal/epd_hal_interface.h"
+#include "epd_types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -84,5 +85,7 @@ typedef struct lut{
     uint8_t VSL;
     uint8_t VCOM;
 } lut_t;
+
+extern const EPD_Driver_Interface SSD1680_Driver;
 
 #endif // SSD1680_H

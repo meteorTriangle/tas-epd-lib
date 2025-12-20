@@ -1,0 +1,99 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "stm32",
+            "inherits": "base",
+            "displayName": "STM32 Configuration",
+            "description": "Target STM32 Microcontrollers",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/stm32_toolchain.cmake",
+                "TARGET_PLATFORM": "STM32"
+            }
+        },
+        {
+            "name": "Raspberry Pi",
+            "inherits": "base",
+            "displayName": "Raspberry Pi Configuration",
+            "description": "Target Raspberry Pi Microcontrollers",
+            "cacheVariables": {
+                "TARGET_PLATFORM": "RPI"
+            }
+        },
+        {
+            "name": "Custom",
+            "inherits": "base",
+            "displayName": "Custom Configuration",
+            "description": "Custom Target Configuration",
+            "cacheVariables": {
+                "TARGET_PLATFORM": "CUSTOM"
+            }
+        },
+        {
+            "name": "pico",
+            "inherits": "base",
+            "displayName": "Raspberry Pi Pico Configuration",
+            "description": "Target Raspberry Pi Pico (RP2040)",
+            "cacheVariables": {
+                "TARGET_PLATFORM": "PICO",
+                "PICO_SDK_FETCH_FROM_GIT": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "stm32-debug",
+            "configurePreset": "stm32",
+            "configuration": "Debug"
+        },
+        {
+            "name": "stm32-release",
+            "configurePreset": "stm32",
+            "configuration": "Release"
+        },
+        {
+            "name": "Raspberry-debug",
+            "configurePreset": "Raspberry Pi",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Raspberry-release",
+            "configurePreset": "Raspberry Pi",
+            "configuration": "Release"
+        },
+        {
+            "name": "Custom-debug",
+            "configurePreset": "Custom",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Custom-release",
+            "configurePreset": "Custom",
+            "configuration": "Release"
+        },
+        {
+            "name": "pico-debug",
+            "configurePreset": "pico",
+            "configuration": "Debug"
+        },
+        {
+            "name": "pico-release",
+            "configurePreset": "pico",
+            "configuration": "Release"
+        }
+    ]
+}
