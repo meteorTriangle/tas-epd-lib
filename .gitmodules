@@ -1,0 +1,33 @@
+[submodule "example/STM32_Example/Drivers/CMSIS_5"]
+	path = example/STM32_Example/Drivers/CMSIS_5
+	url = https://github.com/ARM-software/CMSIS_5.git
+[submodule "example/STM32_Example/Drivers/CMSIS_F0"]
+	path = example/STM32_Example/Drivers/CMSIS_F0
+	url = https://github.com/STMicroelectronics/cmsis-device-f0.git
+[submodule "example/STM32_Example/Drivers/CMSIS_F1"]
+	path = example/STM32_Example/Drivers/CMSIS_F1
+	url = https://github.com/STMicroelectronics/cmsis-device-f1.git
+[submodule "example/STM32_Example/Drivers/CMSIS_F3"]
+	path = example/STM32_Example/Drivers/CMSIS_F3
+	url = https://github.com/STMicroelectronics/cmsis-device-f3.git
+[submodule "example/STM32_Example/Drivers/CMSIS_F4"]
+	path = example/STM32_Example/Drivers/CMSIS_F4
+	url = https://github.com/STMicroelectronics/cmsis-device-f4.git
+[submodule "example/STM32_Example/Drivers/STM32F0xx_HAL"]
+	path = example/STM32_Example/Drivers/STM32F0xx_HAL
+	url = https://github.com/STMicroelectronics/stm32f0xx-hal-driver.git
+[submodule "example/STM32_Example/Drivers/STM32F1xx_HAL"]
+	path = example/STM32_Example/Drivers/STM32F1xx_HAL
+	url = https://github.com/STMicroelectronics/stm32f1xx-hal-driver.git
+[submodule "example/STM32_Example/Drivers/STM32F3xx_HAL"]
+	path = example/STM32_Example/Drivers/STM32F3xx_HAL
+	url = https://github.com/STMicroelectronics/stm32f3xx-hal-driver.git
+[submodule "example/STM32_Example/Drivers/STM32F4xx_HAL"]
+	path = example/STM32_Example/Drivers/STM32F4xx_HAL
+	url = https://github.com/STMicroelectronics/stm32f4xx-hal-driver.git
+[submodule "example/STM32_Example/Drivers/STM32L1xx_HAL"]
+	path = example/STM32_Example/Drivers/STM32L1xx_HAL
+	url = https://github.com/STMicroelectronics/stm32l1xx-hal-driver.git
+[submodule "example/STM32_Example/Drivers/CMSIS_L1"]
+	path = example/STM32_Example/Drivers/CMSIS_L1
+	url = https://github.com/STMicroelectronics/cmsis-device-l1.git
