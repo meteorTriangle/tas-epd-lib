@@ -65,6 +65,8 @@ uint8_t EPD_setCursor(EPD_Handle* handle, uint16_t x, uint16_t y);
  * @param data_length Length of the image data in bytes.
  * @param color_layer Color layer to write (e.g., 0 for black/white, 1 for red).
  * @return Status code indicating success or error. @link EPD_Status_Codes
+ * @note This function handles the entire process of writing image data, including
+ * beginning the write, sending the data, and ending the write.
  */
 uint8_t EPD_WriteImage(EPD_Handle* handle, const uint8_t* image_data, uint32_t data_length, uint8_t color_layer);
 
@@ -74,5 +76,32 @@ uint8_t EPD_WriteImage(EPD_Handle* handle, const uint8_t* image_data, uint32_t d
  * @return Status code indicating success or error. @link EPD_Status_Codes
  */
 uint8_t EPD_Update(EPD_Handle* handle);
+
+/**
+ * @brief Start writing image data to the EPD display.
+ * @param handle Pointer to the EPD handle.
+ * @param color_layer Color layer to write (e.g., 0 for black/white, 1 for red).
+ * @return Status code indicating success or error. @link EPD_Status_Codes
+ */
+uint8_t EPD_StartWriteImage(EPD_Handle* handle, uint8_t color_layer);
+
+/**
+ * @brief End writing image data to the EPD display.
+ * @param handle Pointer to the EPD handle.
+ * @return Status code indicating success or error. @link EPD_Status_Codes
+ */
+uint8_t EPD_EndWriteImage(EPD_Handle* handle);
+
+/**
+ * @brief Write image data to the EPD display in separate steps.
+ * @param handle Pointer to the EPD handle.
+ * @param image_data Pointer to the image data buffer.
+ * @param data_length Length of the image data in bytes.
+ * @param color_layer Color layer to write (e.g., 0 for black/white, 1 for red).
+ * @return Status code indicating success or error. @link EPD_Status_Codes
+ */
+uint8_t EPD_WriteImageSeperately(EPD_Handle* handle, const uint8_t* image_data, uint32_t data_length, uint8_t color_layer);
+
+
 
 #endif // EPD_API_H

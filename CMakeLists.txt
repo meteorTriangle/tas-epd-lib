@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
+project(EPD_TAS_Library C ASM)
 
 include(cmake/modules.cmake)
 

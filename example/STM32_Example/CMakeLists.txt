@@ -1,0 +1,2 @@
+add_subdirectory(STM32F103C8_2CEPD_section)
+add_subdirectory(STM32F103C8_4CEPD_section)

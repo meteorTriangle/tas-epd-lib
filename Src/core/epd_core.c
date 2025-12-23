@@ -134,3 +134,45 @@ uint8_t EPD_Update(EPD_Handle* handle){
     handle->profile->driver->update(handle->hal);
     return EPD_OK;
 }
+
+
+uint8_t EPD_StartWriteImage(EPD_Handle* handle, uint8_t color_layer){
+    if( handlePtrNullCheck(handle) != EPD_OK ){
+        return EPD_ERROR_NULL_PTR;
+    }
+    if( handle->profile->driver->write_ram_begin == NULL ){
+        return EPD_ERROR_NOT_SUPPORTED;
+    }
+    handle->profile->driver->write_ram_begin(handle->hal, color_layer);
+    return EPD_OK;
+}
+
+uint8_t EPD_EndWriteImage(EPD_Handle* handle){
+    if( handlePtrNullCheck(handle) != EPD_OK ){
+        return EPD_ERROR_NULL_PTR;
+    }
+    if( handle->profile->driver->write_ram_end == NULL ){
+        return EPD_ERROR_NOT_SUPPORTED;
+    }
+    handle->profile->driver->write_ram_end(handle->hal);
+    return EPD_OK;
+}
+
+uint8_t EPD_WriteImageSeperately(EPD_Handle* handle, const uint8_t* image_data, uint32_t data_length, uint8_t color_layer){
+    if( handlePtrNullCheck(handle) != EPD_OK ){
+        return EPD_ERROR_NULL_PTR;
+    }
+    if( image_data == NULL ){
+        return EPD_ERROR_NULL_PTR;
+    }
+    if ( data_length == 0 ){
+        return EPD_ERROR_INVALID_PARAM;
+    }
+    handle->profile->driver->write_ram_begin(handle->hal, color_layer);
+    // write image data
+    if( handle->profile->driver->write_ram == NULL ){
+        return EPD_ERROR_NOT_SUPPORTED;
+    }
+    handle->profile->driver->write_ram(handle->hal, image_data, data_length);
+    return EPD_OK;
+}
