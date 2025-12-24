@@ -16,6 +16,8 @@ target_sources(${LIB_NAME} INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../Src/core/epd_core.c
     ${CMAKE_CURRENT_LIST_DIR}/../Src/drivers/SSD1680.c
     ${CMAKE_CURRENT_LIST_DIR}/../Src/drivers/JD79661.c
+    ${CMAKE_CURRENT_LIST_DIR}/../Src/drivers/SSD1677.c
+    
     ${MODULES}
 )
 

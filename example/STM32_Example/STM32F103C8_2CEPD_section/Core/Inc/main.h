@@ -65,6 +65,10 @@ void Error_Handler(void);
 #define EPD_nRST_GPIO_Port GPIOA
 #define EPD_nBUSY_Pin GPIO_PIN_6
 #define EPD_nBUSY_GPIO_Port GPIOA
+#define EPD_SPI_SCK_Pin GPIO_PIN_5
+#define EPD_SPI_SCK_GPIO_Port GPIOA
+#define EPD_SPI_MISO_Pin GPIO_PIN_6
+#define EPD_SPI_MISO_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
